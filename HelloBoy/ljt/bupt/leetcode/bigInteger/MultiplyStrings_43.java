@@ -1,6 +1,7 @@
 package ljt.bupt.leetcode.bigInteger;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 public class MultiplyStrings_43 {
 
@@ -9,8 +10,8 @@ public class MultiplyStrings_43 {
 		// "67671277416626746657687631784163120468201083678333022807";
 		// String num2 =
 		// "7513826174917015375128752933843614929738429142691134209414990271995868820936126459879940531569978476559542476";
-		String num1 = "123";
-		String num2 = "345";
+		String num1 = "0";
+		String num2 = "456";
 		String res = multiply(num1, num2);
 		BigInteger b1 = new BigInteger(num1);
 		BigInteger b2 = new BigInteger(num2);
@@ -20,7 +21,53 @@ public class MultiplyStrings_43 {
 		System.out.println(res);
 	}
 
+	// 相乘和进位分开进行
 	private static String multiply(String num1, String num2) {
+		if (num1 == null || num2 == null)
+			return null;
+		int len1 = num1.length();
+		int len2 = num2.length();
+		// 结果的位数最多可能是两个乘数位数之和
+		int len3 = len1 + len2;
+		int[] res = new int[len3];
+		StringBuilder sb1 = new StringBuilder(num1);
+		StringBuilder sb2 = new StringBuilder(num2);
+		String nums1 = sb1.reverse().toString();
+		String nums2 = sb2.reverse().toString();
+
+		// 每一位都得到了这位该有的值，接下来就剩下进位
+		for (int i = 0; i < len1; i++) {
+			int a = nums1.charAt(i) - '0';
+			for (int j = 0; j < len2; j++) {
+				int b = nums2.charAt(j) - '0';
+				res[i + j] += a * b;
+			}
+		}
+		// 进位
+		int carry = 0;
+		for (int i = 0; i < len3; i++) {
+			int tmp = res[i];
+			res[i] = (tmp + carry) % 10;
+			carry = (tmp + carry) / 10;
+		}
+
+		// System.out.println(Arrays.toString(res));
+		int index = 0;
+		for (int i = res.length - 1; i > 0; i--) {
+			if (res[i] != 0) {
+				index = i;
+				break;
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i <= index; i++) {
+			sb.append(res[i]);
+		}
+		return sb.reverse().toString();
+	}
+
+	// 这个是相乘和进位一起进行
+	private static String multiply2(String num1, String num2) {
 		if (num1 == null || num2 == null)
 			return null;
 		int len1 = num1.length(), len2 = num2.length();
@@ -52,9 +99,6 @@ public class MultiplyStrings_43 {
 		return resstr.toString();
 	}
 
-	
-	
-	
 	static StringBuilder ssb = new StringBuilder();
 
 	// 我的这个模拟手算乘法的思路不管怎么优化字符串拼接，还是减少创建sb对象的个数，都会超时。需要更改其他算法
