@@ -8,9 +8,33 @@ public class MaximumSubarray_53 {
 		System.out.println(res);
 	}
 
+	
+	
+//	思路：subarray sum 这种问题就考虑用前n项和。 所以先得到前n项和数组，然后求他们能存在的最大差值。
+//	就变成了Best Time to Buy and Sell Stock(121)一样的问题。 从左向右扫描， 更新差值使其保持最大， 
+//	然后更新min。
+//
+//	时间复杂度： O(N)空间复杂度： O(N)
 	private static int maxSubArray(int[] nums) {
-		
-		return 0;
+		// 找到subarray sum 的最大差
+		if (nums.length == 0 || nums == null) {
+			return 0;
+		}
+		if (nums.length == 1) {
+			return nums[0];
+		}
+		int[] sum = new int[nums.length + 1];
+		sum[0] = 0;
+		for (int i = 1; i <= nums.length; i++) {
+			sum[i] = sum[i - 1] + nums[i - 1];
+		}
+		int min = Integer.MAX_VALUE;
+		int largest = Integer.MIN_VALUE;
+		for (int i = 0; i <= nums.length; i++) {
+			largest = sum[i] - min > largest ? sum[i] - min : largest;
+			min = sum[i] < min ? sum[i] : min;
+		}
+		return largest;
 	}
 
 	// 使用数学分析出来的贪心规律
