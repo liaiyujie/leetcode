@@ -1,4 +1,4 @@
-package ljt.bupt.jiudu;
+package ljt.bupt.datastruct;
 
 import java.math.BigInteger;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package ljt.bupt.jiudu;
+package ljt.bupt.datastruct;
 
 public class FizzbuzzTest {
 

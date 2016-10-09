@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class KthLargestElementinanArray {
+public class KthLargestElementinanArray_215 {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
