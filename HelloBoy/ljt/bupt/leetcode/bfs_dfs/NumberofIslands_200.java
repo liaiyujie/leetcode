@@ -11,71 +11,75 @@ public class NumberofIslands_200 {
 	};
 
 	public static void main(String[] args) {
-//		char[][] grid = { { '0', '1', '0' }, { '1', '0', '1' }, { '0', '1', '0' } };
-		 char[][] grid = { { '1', '1', '1', '1', '0' }, { '1', '1', '0', '1',
-		 '0' }, { '1', '1', '0', '0', '0' },
-		 { '0', '0', '0', '0', '0' } };
+		// char[][] grid = { { '0', '1', '0' }, { '1', '0', '1' }, { '0', '1',
+		// '0' } };
+		char[][] grid = { { '1', '1', '0', '0', '0' }, { '1', '1', '0', '0', '0' }, { '0', '0', '1', '0', '0' },
+				{ '0', '0', '0', '1', '1' } };
 		int res = numIslands2(grid);
 		System.out.println(res);
 	}
 
-	private static int numIslands(char[][] grid) {//bfs
-		if (grid == null || grid.length == 0 || grid[0].length == 0) return 0;
-        Queue<int[]> queue = new LinkedList<>();
-        int count = 0;
-        int M = grid.length;
-        int N = grid[0].length;
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[0].length; j++) {
-                if (grid[i][j] == '1') {
-                    count++;
-                    addNode(i, j, queue, grid);
-                    while(!queue.isEmpty()) {
-                        int[] node = queue.remove();
-                        grid[node[0]][node[1]] = '2';
-                        addNode(node[0], node[1]-1, queue, grid);
-                        addNode(node[0], node[1]+1, queue, grid);
-                        addNode(node[0]-1, node[1], queue, grid);
-                        addNode(node[0]+1, node[1], queue, grid);
-                    }
-                }
-            }
-        }
-        return count;
+	private static int numIslands(char[][] grid) {// bfs
+		if (grid == null || grid.length == 0 || grid[0].length == 0)
+			return 0;
+		Queue<int[]> queue = new LinkedList<>();
+		int count = 0;
+		int M = grid.length;
+		int N = grid[0].length;
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				if (grid[i][j] == '1') {
+					count++;
+					addNode(i, j, queue, grid);
+					while (!queue.isEmpty()) {
+						int[] node = queue.remove();
+						grid[node[0]][node[1]] = '2';
+						addNode(node[0], node[1] - 1, queue, grid);
+						addNode(node[0], node[1] + 1, queue, grid);
+						addNode(node[0] - 1, node[1], queue, grid);
+						addNode(node[0] + 1, node[1], queue, grid);
+					}
+				}
+			}
+		}
+		return count;
 	}
+
 	private static void addNode(int i, int j, Queue<int[]> queue, char[][] grid) {
-        if (i >= 0 && i < grid.length
-                && j >= 0 && j < grid[0].length
-                && grid[i][j] == '1') {
-            grid[i][j] = '2';
-            queue.add(new int[]{i, j});
-        }
-    }
-//	The basic idea is to traverse all the points, every time when current point is land, the program will stop and 
-//	found out the whole land that is connected with this land, and mark them as traversed (by giving them value 0).
-//	So the sub problem now is to solve the problem of finding connected land. This we can use DFS and traversed mark.
-//	Every time we find a land, we use DFS on its nearby & not traversed land.
-//	public:
-//	    int numIslands(vector<vector<char>>& grid) {
-//	        int result=0;
-//	        for (int i=0;i<grid.size();i++){
-//	            for (int j=0;j<grid[0].size();j++){
-//	                if (grid[i][j]=='1'){
-//	                    result += 1;
-//	                    dfs(i,j,grid);
-//	                }
-//	            }
-//	        }
-//	        return result;
-//	    }
-//	    void dfs(int i,int j,vector<vector<char>>& grid){
-//	        grid[i][j] = -1;
-//	        if (i+1<grid.size() && grid[i+1][j]=='1') dfs(i+1,j,grid);
-//	        if (j+1<grid[0].size() && grid[i][j+1]=='1') dfs(i,j+1,grid);
-//	        if (i-1<grid[0].size() && grid[i-1][j]=='1') dfs(i-1,j,grid);
-//	        if (j-1<grid[0].size() && grid[i][j-1]=='1') dfs(i,j-1,grid);
-//	    }
-//	};
+		if (i >= 0 && i < grid.length && j >= 0 && j < grid[0].length && grid[i][j] == '1') {
+			grid[i][j] = '2';
+			queue.add(new int[] { i, j });
+		}
+	}
+
+	// The basic idea is to traverse all the points, every time when current
+	// point is land, the program will stop and
+	// found out the whole land that is connected with this land, and mark them
+	// as traversed (by giving them value 0).
+	// So the sub problem now is to solve the problem of finding connected land.
+	// This we can use DFS and traversed mark.
+	// Every time we find a land, we use DFS on its nearby & not traversed land.
+	// public:
+	// int numIslands(vector<vector<char>>& grid) {
+	// int result=0;
+	// for (int i=0;i<grid.size();i++){
+	// for (int j=0;j<grid[0].size();j++){
+	// if (grid[i][j]=='1'){
+	// result += 1;
+	// dfs(i,j,grid);
+	// }
+	// }
+	// }
+	// return result;
+	// }
+	// void dfs(int i,int j,vector<vector<char>>& grid){
+	// grid[i][j] = -1;
+	// if (i+1<grid.size() && grid[i+1][j]=='1') dfs(i+1,j,grid);
+	// if (j+1<grid[0].size() && grid[i][j+1]=='1') dfs(i,j+1,grid);
+	// if (i-1<grid[0].size() && grid[i-1][j]=='1') dfs(i-1,j,grid);
+	// if (j-1<grid[0].size() && grid[i][j-1]=='1') dfs(i,j-1,grid);
+	// }
+	// };
 	private static int numIslands2(char[][] grid) {
 		int count = 0;
 		n = grid.length;
@@ -96,7 +100,7 @@ public class NumberofIslands_200 {
 		if (i < 0 || j < 0 || i >= n || j >= m || grid[i][j] != '1')
 			return;
 		grid[i][j] = '0';
-		//下面是DFS，按照 先下 上  右  左 的方向遍历。
+		// 下面是DFS，按照 先下 上 右 左 的方向遍历。
 		// 一般深度优先遍历是需要栈的支持，而递归即为栈。也可以自己用栈来实现，但代码会很长
 		DFSMarking(grid, i + 1, j);
 		DFSMarking(grid, i - 1, j);

@@ -67,6 +67,8 @@ public class MaximumGap_164 {
 													// gap
 		return maxGap;
 	}
+	
+	
 
 	// 没写出来，出点问题
 	// Try to solve it in linear time/space.
@@ -101,7 +103,7 @@ public class MaximumGap_164 {
 		int nGap = delta / len;
 		int gap;
 		for (int j = 1; j < len; j++) {
-			if (bucket[j].getValid()) {
+			if (bucket[j].getValid() == true) {
 				gap = bucket[j].getMin() - bucket[i].getMax();
 				if (nGap < gap)
 					nGap = gap;
@@ -128,9 +130,10 @@ public class MaximumGap_164 {
 }
 
 class Bucket {
-	private boolean isValid;
-	private int max;
-	private int min;
+	
+	private boolean isValid = false;
+	private int max = 0 ;
+	private int min = 0 ;
 
 	public Bucket() {
 		super();
@@ -168,7 +171,7 @@ class Bucket {
 	}
 
 	public void add(int val) {
-		if (!this.getValid()) {
+		if (this.getValid() == false) {
 			this.max = val;
 			this.min = val;
 			this.isValid = true;
