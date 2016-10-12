@@ -1,5 +1,6 @@
 package ljt.bupt.leetcode.bfs_dfs;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -9,17 +10,45 @@ public class NumberofIslands_200 {
 	static private int m;
 	static int[][] goes = { { 0, -1 }, { 0, 1 }, { -1, 0 }, { 1, 0 }// 一个点的上下左右点
 	};
+	static int[][] distance = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
 
 	public static void main(String[] args) {
 		// char[][] grid = { { '0', '1', '0' }, { '1', '0', '1' }, { '0', '1',
 		// '0' } };
 		char[][] grid = { { '1', '1', '0', '0', '0' }, { '1', '1', '0', '0', '0' }, { '0', '0', '1', '0', '0' },
 				{ '0', '0', '0', '1', '1' } };
-		int res = numIslands2(grid);
+		int res = numIslands(grid);
 		System.out.println(res);
+
+		// System.out.println(new UnionFindSet(grid).count());
 	}
 
-	private static int numIslands(char[][] grid) {// bfs
+	private static int numIslands(char[][] grid) {
+		if (grid == null || grid.length == 0 || grid[0].length == 0) {
+			return 0;
+		}
+		UnionFind uf = new UnionFind(grid);
+		int rows = grid.length;
+		int cols = grid[0].length;
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (grid[i][j] == '1') {
+					for (int[] d : distance) {
+						int x = i + d[0];
+						int y = j + d[1];
+						if (x >= 0 && x < rows && y >= 0 && y < cols && grid[x][y] == '1') {
+							int id1 = i * cols + j;
+							int id2 = x * cols + y;
+							uf.union(id1, id2);
+						}
+					}
+				}
+			}
+		}
+		return uf.count;
+	}
+
+	private static int numIslands3(char[][] grid) {// bfs
 		if (grid == null || grid.length == 0 || grid[0].length == 0)
 			return 0;
 		Queue<int[]> queue = new LinkedList<>();
@@ -171,6 +200,136 @@ public class NumberofIslands_200 {
 	 * DFS(nx,ny,rowlen,collen,grid,mark); } return ; }
 	 */
 
+}
+
+class UnionFind {
+	int[] father;
+	int m, n;
+	int count = 0;
+
+	UnionFind(char[][] grid) {
+		m = grid.length;
+		n = grid[0].length;
+		father = new int[m * n];
+		for (int i = 0; i < m; i++) {
+			for (int j = 0; j < n; j++) {
+				if (grid[i][j] == '1') {
+					int id = i * n + j;
+					father[id] = id;
+					count++;
+				}
+			}
+		}
+	}
+
+	public void union(int node1, int node2) {
+		int find1 = find(node1);
+		int find2 = find(node2);
+		if (find1 != find2) {
+			father[find1] = find2;
+			count--;
+		}
+	}
+
+	public int find(int x) {
+		int root = x ;
+		while (father[root] != root) {
+			root = father[root];
+		}
+		
+		int path = x;
+		int tmp;
+		while(father[path]!=root){
+			tmp = father[path];
+			father[path] = root;
+			path = tmp;
+		}
+		return root ;
+	}
+}
+
+class UnionFindSet {
+
+	int[] nodes;
+	boolean empty;
+	HashSet<Integer> invalid = new HashSet<>();
+	int[][] dir = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+
+	public UnionFindSet(char[][] grid) {
+		if (grid.length == 0) {
+			empty = true;
+		} else {
+			empty = false;
+			int rows = grid.length;
+			int cols = grid[0].length;
+			nodes = new int[rows * cols];
+			for (int i = 0; i < rows; ++i) {
+				for (int j = 0; j < cols; ++j) {
+					int index = i * cols + j;
+					if (grid[i][j] == '1') {
+						nodes[index] = index;
+					} else {
+						invalid.add(index);
+					}
+				}
+			}
+			for (int i = 0; i < rows; ++i) {
+				for (int j = 0; j < cols; ++j) {
+					int index = i * cols + j;
+					if (grid[i][j] == '1') {
+						for (int k = 0; k < 4; ++k) {
+							int i0 = i + dir[k][1];
+							int j0 = j + dir[k][0];
+							if (i0 >= 0 && j0 >= 0 && i0 < rows && j0 < cols) {
+								if (grid[i0][j0] == '1') {
+									int index0 = i0 * cols + j0;
+									join(index, index0);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public int find(int x) {
+
+		int root = x;
+		while (nodes[root] != root) {
+			root = nodes[root];
+		}
+
+		int path = x, temp;
+		while (nodes[path] != root) {
+			temp = nodes[path];
+			nodes[path] = root;
+			path = temp;
+		}
+
+		return root;
+	}
+
+	public void join(int x, int y) {
+		int rx = find(x), ry = find(y);
+		if (rx != ry) {
+			nodes[rx] = ry;
+		}
+	}
+
+	public int count() {
+		if (empty) {
+			return 0;
+		} else {
+			HashSet<Integer> counter = new HashSet<>();
+			for (int i = 0; i < nodes.length; ++i) {
+				if (!invalid.contains(i)) {
+					counter.add(find(i));
+				}
+			}
+			return counter.size();
+		}
+	}
 }
 
 class CharAndIndex {
