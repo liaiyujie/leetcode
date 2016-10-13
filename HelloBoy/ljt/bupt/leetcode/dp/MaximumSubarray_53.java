@@ -8,14 +8,30 @@ public class MaximumSubarray_53 {
 		System.out.println(res);
 	}
 
-	
-	
+	//记S[i] 为以nums[i] 结尾的数组中和最大的子数组
+	//dp  S[i+1] = max {S[i]+nums[i+1],nums[i+1]};
+	private static int maxSubArray(int[] nums) {
+		int sum = nums[0];
+		int res = sum ;
+		for(int i = 1 ; i <nums.length ;i++){
+			if(sum>0){
+				sum+=nums[i];
+			}else{
+				sum = nums[i];
+			}
+			res = Math.max(res, sum);
+		}
+		return res;
+	}
+
+
+
 //	思路：subarray sum 这种问题就考虑用前n项和。 所以先得到前n项和数组，然后求他们能存在的最大差值。
 //	就变成了Best Time to Buy and Sell Stock(121)一样的问题。 从左向右扫描， 更新差值使其保持最大， 
 //	然后更新min。
 //
 //	时间复杂度： O(N)空间复杂度： O(N)
-	private static int maxSubArray(int[] nums) {
+	private static int maxSubArray3(int[] nums) {
 		// 找到subarray sum 的最大差
 		if (nums.length == 0 || nums == null) {
 			return 0;
