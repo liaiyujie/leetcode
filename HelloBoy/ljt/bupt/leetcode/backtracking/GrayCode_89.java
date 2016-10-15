@@ -12,6 +12,15 @@ public class GrayCode_89 {
 	}
 
 	private static ArrayList<Integer> grayCode(int n) {
+		ArrayList<Integer> res = new ArrayList<>();
+        for (int i = 0; i <(1 << n); i++) {
+            int temp = (i/2)^i;
+            res.add(temp);
+        }
+        return res;
+	}
+
+	private static ArrayList<Integer> grayCode2(int n) {
 		ArrayList<Integer> result = new ArrayList<Integer>();
         if (n <= 1) {
             for (int i = 0; i <= n; i++){
