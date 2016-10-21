@@ -26,13 +26,6 @@ public class MergeSort_Test {
 		int i = left;//指向左半部分的首位
 		int j = mid+1;//指向右半部分的首位
 		int size = 0;
-//		for( ; (i<=mid)&&(j<=right);size++){
-//			if(nums[i]<=nums[j]){
-//				tmp[size] = nums[i++];
-//			}else{
-//				tmp[size] = nums[j++];
-//			}
-//		}
 		while(i<=mid&&j<=right){
 			if(nums[i]<=nums[j]){
 				tmp[size++] = nums[i++];
